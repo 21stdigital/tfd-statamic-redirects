@@ -1,5 +1,6 @@
 {
     "name": "tfd/statamic-redirects",
+    "license": "MIT",
     "scripts": {
         "lint": "@php ./vendor/bin/php-cs-fixer fix -v --config .php-cs-fixer.php"
     },
