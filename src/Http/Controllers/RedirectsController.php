@@ -114,11 +114,11 @@ class RedirectsController extends CpController
     public function update(Request $request, string $id)
     {
         $this->authorize('create redirects');
-
+        
         if (!$this->repository->exists($id)) {
             return redirect(route('statamic.cp.statamic-redirects.index'));
         }
-
+        
         $fields = RedirectBlueprint::get()->fields()->addValues($request->all());
         $fields->validate();
         $values = $fields->process()->values()->toArray();

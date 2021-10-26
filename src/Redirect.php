@@ -2,6 +2,7 @@
 
 namespace TFD\Redirects;
 
+use Carbon\Carbon;
 use Statamic\Fieldtypes\Link;
 
 class Redirect
@@ -37,5 +38,20 @@ class Redirect
     public function hit()
     {
         $this->repository->hit($this->getId());
+    }
+
+    public function isActive()
+    {
+        if (!$this->data['active']) {
+            return false;
+        }
+
+        $start = $this->data['start'];
+        $end = $this->data['end'];
+
+        $afterStart = ($start === null) ? true : now()->greaterThan(Carbon::createFromTimeString($start));
+        $beforeEnd = ($end === null) ? true : now()->lessThan(Carbon::createFromTimeString($end));
+
+        return $afterStart && $beforeEnd;
     }
 }

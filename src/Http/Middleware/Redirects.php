@@ -31,11 +31,12 @@ class Redirects
         }
 
         $redirect = $this->repository->getBySource($source);
-        if (!$redirect['active']) {
+
+        $red = new Redirect($redirect, $this->repository);
+        if (!$red->isActive()) {
             return $response;
         }
 
-        $red = new Redirect($redirect, $this->repository);
         $red->hit();
         
         return redirect($red->generateTargetUrl(), $redirect['status']);
