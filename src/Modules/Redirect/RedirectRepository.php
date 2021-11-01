@@ -1,6 +1,6 @@
 <?php
 
-namespace TFD\Redirects;
+namespace TFD\Redirects\Modules\Redirect;
 
 use Exception;
 use Illuminate\Support\Collection;
@@ -77,6 +77,10 @@ class RedirectRepository
 
     public function update($id, $data)
     {
+        if ($data['source'] === $data['target']) {
+            throw new Exception(__('statamic-redirects::default.exceptions.different_source_and_target'));
+        }
+
         $redirect = $this->get($id);
 
         $existing_data = collect($redirect);

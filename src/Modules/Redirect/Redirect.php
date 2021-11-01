@@ -1,6 +1,6 @@
 <?php
 
-namespace TFD\Redirects;
+namespace TFD\Redirects\Modules\Redirect;
 
 use Carbon\Carbon;
 use Statamic\Fieldtypes\Link;

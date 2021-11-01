@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Statamic\CP\Column;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
-use TFD\Redirects\Redirect;
-use TFD\Redirects\RedirectBlueprint;
-use TFD\Redirects\RedirectRepository;
+use TFD\Redirects\Modules\Redirect\Redirect;
+use TFD\Redirects\Modules\Redirect\RedirectBlueprint;
+use TFD\Redirects\Modules\Redirect\RedirectRepository;
 use Statamic\Support\Str;
 
 class RedirectsController extends CpController
@@ -44,7 +44,7 @@ class RedirectsController extends CpController
 
         $user = User::current();
 
-        return view('statamic-redirects::index', [
+        return view('statamic-redirects::redirects.index', [
             'title' => __('statamic-redirects::default.headlines.index'),
             'redirects' => $redirects,
             'columns' => $columns,
@@ -63,7 +63,7 @@ class RedirectsController extends CpController
         $blueprint = RedirectBlueprint::get();
         $fields = $blueprint->fields()->addValues($data)->preProcess();
 
-        return view('statamic-redirects::create', [
+        return view('statamic-redirects::redirects.create', [
             'title' => __('statamic-redirects::default.headlines.create'),
             'blueprint' => $blueprint->toPublishArray(),
             'meta' => $fields->meta(),
@@ -93,7 +93,7 @@ class RedirectsController extends CpController
         $this->authorize('create redirects');
 
         if (!$this->repository->exists($id)) {
-            return redirect(route('statamic.cp.statamic-redirects.index'));
+            return redirect(route('statamic.cp.statamic-redirects.redirects.index'));
         }
 
         $redirect = $this->repository->get($id);
@@ -101,7 +101,7 @@ class RedirectsController extends CpController
         $blueprint = RedirectBlueprint::get();
         $fields = $blueprint->fields()->addValues($redirect)->preProcess();
 
-        return view('statamic-redirects::edit', [
+        return view('statamic-redirects::redirects.edit', [
             'title' => __('statamic-redirects::default.headlines.edit'),
             'blueprint' => $blueprint->toPublishArray(),
             'meta' => $fields->meta(),
@@ -116,7 +116,7 @@ class RedirectsController extends CpController
         $this->authorize('create redirects');
         
         if (!$this->repository->exists($id)) {
-            return redirect(route('statamic.cp.statamic-redirects.index'));
+            return redirect(route('statamic.cp.statamic-redirects.redirects.index'));
         }
         
         $fields = RedirectBlueprint::get()->fields()->addValues($request->all());

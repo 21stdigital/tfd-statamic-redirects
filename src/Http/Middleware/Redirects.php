@@ -4,16 +4,20 @@ namespace TFD\Redirects\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use TFD\Redirects\Redirect;
-use TFD\Redirects\RedirectRepository;
+use TFD\Redirects\Modules\NotFound\NotFound;
+use TFD\Redirects\Modules\NotFound\NotFoundRepository;
+use TFD\Redirects\Modules\Redirect\Redirect;
+use TFD\Redirects\Modules\Redirect\RedirectRepository;
 
 class Redirects
 {
-    protected $repository;
+    protected $redirectRepository;
+    protected $notFoundRepository;
 
-    public function __construct(RedirectRepository $redirectRepository)
+    public function __construct(RedirectRepository $redirectRepository, NotFoundRepository $notFoundRepository)
     {
-        $this->repository = $redirectRepository;
+        $this->redirectRepository = $redirectRepository;
+        $this->notFoundRepository = $notFoundRepository;
     }
 
     public function handle(Request $request, $next)
@@ -26,13 +30,13 @@ class Redirects
         }
 
         $source = $request->path();
-        if (!$this->repository->sourceExists($source)) {
-            return $response;
+        if (!$this->redirectRepository->sourceExists($source)) {
+            return $this->handle404($response, $request, $next);
         }
 
-        $redirect = $this->repository->getBySource($source);
+        $redirect = $this->redirectRepository->getBySource($source);
 
-        $red = new Redirect($redirect, $this->repository);
+        $red = new Redirect($redirect, $this->redirectRepository);
         if (!$red->isActive()) {
             return $response;
         }
@@ -40,5 +44,13 @@ class Redirects
         $red->hit();
         
         return redirect($red->generateTargetUrl(), $redirect['status']);
+    }
+
+    protected function handle404($response, request $request, $next)
+    {
+        $notFound = new NotFound(['url' => $request->url()], $this->notFoundRepository);
+        $notFound->hit();
+
+        return $response;
     }
 }

@@ -1,18 +1,32 @@
 @extends('statamic::layout')
-@section('title', __('statamic-redirects::default.title'))
+@section('title', __('Utilities'))
 
 @section('content')
-    <div class="flex items-center mb-3">
-        <h1 class="flex-1">{{ $title }}</h1>
-        @if ($canCreate)
-            <div>
-                <a href="{{ cp_route('statamic-redirects.create') }}"
-                    class="btn-primary">{{ __('statamic-redirects::default.actions.create') }}</a>
-            </div>
-        @endif
+
+    <header class="mb-3">
+        <h1>{{ __('Utilities') }}</h1>
+    </header>
+
+    <div class="card p-2 content">
+        <div class="flex flex-wrap">
+            @foreach ($modules as $module)
+                <a href="{{ $module->url() }}"
+                    class="w-full lg:w-1/2 p-2 md:flex items-start hover:bg-grey-20 rounded-md group">
+                    <div class="h-8 w-8 mr-2 text-grey-80">
+                        @cp_svg($module->icon())
+                    </div>
+                    <div class="text-blue flex-1 mb-2 md:mb-0 md:mr-3">
+                        <h3>{{ $module->title() }}</h3>
+                        <p class="text-xs">{{ $module->description() }}</p>
+                    </div>
+                </a>
+            @endforeach
+        </div>
     </div>
 
-    <redirects :redirects='@json($redirects)' :columns='@json($columns)'
-        create-url='{{ cp_route('statamic-redirects.create') }}' can-create="{{ $canCreate }}"
-        can-delete="{{ $canDelete }}"></redirects>
-@stop
+    @include('statamic::partials.docs-callout', [
+    'topic' => __('Utilities'),
+    'url' => Statamic::docsUrl('extending/utilities')
+    ])
+
+@endsection

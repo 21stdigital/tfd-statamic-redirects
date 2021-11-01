@@ -3,6 +3,11 @@
 return [
     'title' => 'Redirects',
 
+    'nav' => [
+        'redirects' => 'Redirects',
+        'not_found' => '404 List',
+    ],
+
     'headlines' => [
         'index' => 'Redirects',
         'create' => 'Create new redirect',
