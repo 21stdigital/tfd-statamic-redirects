@@ -72,10 +72,10 @@ class ServiceProvider extends AddonServiceProvider
     {
         Module::make('redirects')
                 ->action([RedirectsController::class, 'index'])
-                ->title('Redirects title')
+                ->title('Redirects')
                 ->icon('cache')
-                ->navTitle('Redirects navTitle')
-                ->description('Redirects description')
+                ->navTitle('Redirects')
+                ->description('Create and manage custom redirects.')
                 ->routes(function($router) {
                     
                 })
@@ -83,10 +83,10 @@ class ServiceProvider extends AddonServiceProvider
 
         Module::make('notfound')
         ->action([NotFoundController::class, 'index'])
-        ->title('Not Found title')
+        ->title('Not Found')
         ->icon('cache')
-        ->navTitle('Not Found navTitle')
-        ->description('Not Found description')
+        ->navTitle('Not Found')
+        ->description('A list of all URLs sending a 404 Not found response.')
         ->routes(function($router) {
 
         })

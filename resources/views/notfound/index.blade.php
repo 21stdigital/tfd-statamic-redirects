@@ -18,13 +18,12 @@
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td>{{ $item['url'] }}</td>
+                            <td class="break-all">{{ $item['url'] }}</td>
                             <td>{{ $item['hits'] }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
         </div>
     @endif
 @stop

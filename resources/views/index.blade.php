@@ -1,10 +1,10 @@
 @extends('statamic::layout')
-@section('title', __('Utilities'))
+@section('title', __('Redirects'))
 
 @section('content')
 
     <header class="mb-3">
-        <h1>{{ __('Utilities') }}</h1>
+        <h1>{{ __('Redirects') }}</h1>
     </header>
 
     <div class="card p-2 content">
@@ -23,10 +23,4 @@
             @endforeach
         </div>
     </div>
-
-    @include('statamic::partials.docs-callout', [
-    'topic' => __('Utilities'),
-    'url' => Statamic::docsUrl('extending/utilities')
-    ])
-
 @endsection
