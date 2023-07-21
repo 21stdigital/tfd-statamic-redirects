@@ -4,9 +4,10 @@ namespace TFD\Redirects\Modules\NotFound;
 
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Statamic\Facades\File;
 use Statamic\Facades\YAML;
-use Statamic\Support\Str;
+use Symfony\Component\Yaml\Yaml as SymfonyYaml;
 
 class NotFoundRepository
 {
@@ -94,17 +95,36 @@ class NotFoundRepository
         $hits = $page['hits'] ?? 0;
 
         $page['hits'] = ++$hits;
-        
+
         $this->update($url, $page);
     }
 
     public function getFromFile()
     {
-        return collect(YAML::parse(File::get($this->storagePath())));
+        try {
+            return collect(YAML::parse(File::get($this->storagePath())));
+        } catch (\Throwable $th) {
+            Log::error("Error reading from the not_found_pages yaml file at `{$this->storagePath()}`.");
+        }
+
+        return collect();
     }
 
     private function writeToFile()
     {
-        File::put($this->storagePath(), YAML::dump($this->pages->toArray()));
+        /**
+         * There were several problems with invalid yaml in the past.
+         * Therefore we first create the yaml string from the pages and then try to parse the string.
+         * If it fails, a log entry is created and the faulty yaml string is not written into the storage file.
+         */
+        $newYaml = YAML::dump($this->pages->toArray());
+
+        try {
+            SymfonyYaml::parse($newYaml);
+
+            File::put($this->storagePath(), $newYaml);
+        } catch (\Throwable $th) {
+            Log::error('Error adding a new not found entry to the yaml file. The last 5 entries:', $this->pages->take(-5)->toArray());
+        }
     }
 }
