@@ -25,9 +25,11 @@ class Redirect
 
     public function generateTargetUrl()
     {
-        $fields = RedirectBlueprint::get()->fields()->addValues($this->data)->process();
-        $targetField = $fields->get('target');
-        $targetValue = $targetField->value();
+        // $this->data is already in its stored form, so it must not be run through
+        // process() again. Doing so for all fields breaks on stored date strings
+        // (start/end), as Statamic 4's Date fieldtype expects ['date' => ..., 'time' => ...].
+        $targetValue = $this->data['target'];
+        $targetField = RedirectBlueprint::get()->fields()->get('target')->setValue($targetValue);
 
         $link = new Link();
         $link->setField($targetField);
