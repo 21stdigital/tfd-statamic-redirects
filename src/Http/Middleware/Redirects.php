@@ -48,6 +48,10 @@ class Redirects
 
     protected function handle404($response, request $request, $next)
     {
+        if (!NotFoundRepository::trackingEnabled()) {
+            return $response;
+        }
+
         $notFound = new NotFound(['url' => $request->url()], $this->notFoundRepository);
         $notFound->hit();
 

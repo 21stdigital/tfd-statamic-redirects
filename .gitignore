@@ -88,3 +88,6 @@ node_modules
 vendor
 mix-manifest.json
 .antlers.json
+
+# Test environment
+tests/.phpunit.cache
