@@ -1,0 +1,22 @@
+{
+  "name": "tfd/statamic-redirects-tests",
+  "description": "Standalone test environment for the storage layer. Runs without statamic/cms; Statamic facades used by the addon are replaced by minimal stubs in tests/stubs.",
+  "type": "project",
+  "require": {
+    "php": "^8.1",
+    "illuminate/config": "^10.0",
+    "illuminate/container": "^10.0",
+    "illuminate/http": "^10.0",
+    "illuminate/support": "^10.0",
+    "phpunit/phpunit": "^10.5",
+    "symfony/yaml": "^6.4",
+    "ramsey/uuid": "^4.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "TFD\\Redirects\\": "../src",
+      "TFD\\Redirects\\Tests\\": "./",
+      "Statamic\\": "stubs/Statamic"
+    }
+  }
+}

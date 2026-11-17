@@ -37,7 +37,22 @@ Additionally you can select an entry instead of entering a URL and the redirect 
 
 **Tip:** Do not forget to `activate` the rule via the toggle switch.
 
+## 404 Tracking
+
+Every URL answered with a 404 is listed in the control panel under `Tools > Redirects > Not Found`.
+The list is stored in `storage/statamic/addons/statamic-redirects/not_found_pages.yaml` and limited to 1,000 entries by default; when the limit is reached, the entries with the fewest hits are removed first.
+
+Publish the config to change this (`php artisan vendor:publish --tag=statamic-redirects-config`) or use the environment variables:
+
+| Env | Default | |
+|---|---|---|
+| `STATAMIC_REDIRECTS_NOT_FOUND_ENABLED` | `true` | Disable 404 tracking completely |
+| `STATAMIC_REDIRECTS_NOT_FOUND_MAX_ENTRIES` | `1000` | Maximum number of stored URLs (`0` = unlimited, not recommended) |
+| `STATAMIC_REDIRECTS_NOT_FOUND_LOCK_TIMEOUT` | `0.25` | Seconds to wait for the file lock before a hit is dropped |
+
 ## Development Notes
+- Tests: `composer install -d tests && tests/vendor/bin/phpunit -c tests/phpunit.xml`
+  (a standalone environment without statamic/cms, see `tests/composer.json`)
 - Run `npm install` from the packages root directory
 - Run `npm run watch` during development
 - After changing js files you have to either 
